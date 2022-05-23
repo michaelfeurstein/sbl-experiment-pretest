@@ -19,10 +19,42 @@ data$rank.r <- rankingMapping[data$rank]
 
 data$notation.r <- as.factor(data$notation.r)
 data$experience.r <- as.factor(data$experience.r)
+data$experience.r <- factor(data$experience.r, levels = c("3", "4"), labels = c("advanced", "novice"))
 data$sequence <- as.factor(data$sequence)
+data$sequence <- factor(data$sequence, levels = c("1", "2"), labels = c("NL-KV", "KV-NL"))
 data$rank.r <- as.factor(data$rank.r)
 
 data <- subset(data, select = c("sequence", "experience.r", "notation.r", "rank.r", "duration", "sus"))
+
+##
+## Visualization
+##
+
+# works
+bxp.duration <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "duration", ylab = "Duration in minutes", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
+bxp.duration
+
+# not nice -look into formatting of decimal and comma of sus score
+bxp.sus <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "sus", ylab = "SUS score", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
+bxp.sus
+
+# doesn't work with rank
+bxp.rank <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "rank", ylab = "Ranking", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
+bxp.rank
+
+
+##
+## Outliers
+##
+
+data %>% group_by(notation.r, experience.r, sequence) %>% identify_outliers(duration)
+
+##
+## Normality Assumption
+##
+
+data %>% group_by(notation.r, experience.r, sequence) %>% shapiro_test(duration)
+
 
 ##
 # ANOVA ASSUMPTIONS
