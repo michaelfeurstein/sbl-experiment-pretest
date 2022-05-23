@@ -3,7 +3,7 @@ library(ggplot2)
 library(AICcmodavg)
 
 # load data
-data <- read.csv("dataset_v3.csv", sep = ";", header = TRUE)
+data <- read.csv("dataset_v4.csv", sep = ";", header = TRUE)
 data$time <- as.POSIXct(data$time, format="%M:%S")
 data$duration <- as.numeric(format(data$time, "%M")) + as.numeric(format(data$time, "%S"))/60
 
@@ -11,13 +11,18 @@ data$duration <- as.numeric(format(data$time, "%M")) + as.numeric(format(data$ti
 # setup mapping and factors
 syntaxMapping <- c("nl" = 1, "kv" = 2)
 experienceMapping <- c("advanced" = 3, "novice" = 4)
+rankingMapping <- c("don't know" = 0, "2nd place" = 1, "1st place" = 2)
 
 data$notation.r <- syntaxMapping[data$notation]
 data$experience.r <- experienceMapping[data$experience]
+data$rank.r <- rankingMapping[data$rank]
 
 data$notation.r <- as.factor(data$notation.r)
 data$experience.r <- as.factor(data$experience.r)
 data$sequence <- as.factor(data$sequence)
+data$rank.r <- as.factor(data$rank.r)
+
+data <- subset(data, select = c("sequence", "experience.r", "notation.r", "rank.r", "duration", "sus"))
 
 ##
 # ANOVA ASSUMPTIONS
