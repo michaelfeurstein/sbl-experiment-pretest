@@ -18,43 +18,135 @@ data$experience.r <- experienceMapping[data$experience]
 data$rank.r <- rankingMapping[data$rank]
 
 data$notation.r <- as.factor(data$notation.r)
+data$notation.r <- factor(data$notation.r, levels = c("1", "2"), labels = c("natural language", "key-value"))
 data$experience.r <- as.factor(data$experience.r)
 data$experience.r <- factor(data$experience.r, levels = c("3", "4"), labels = c("advanced", "novice"))
 data$sequence <- as.factor(data$sequence)
 data$sequence <- factor(data$sequence, levels = c("1", "2"), labels = c("NL-KV", "KV-NL"))
 data$rank.r <- as.factor(data$rank.r)
 
-data <- subset(data, select = c("sequence", "experience.r", "notation.r", "rank.r", "duration", "sus"))
+data <- subset(data, select = c("id", "sequence", "experience.r", "notation.r", "duration", "accuracy", "sus", "rank.r"))
 
 ##
 ## Visualization
 ##
 
-# works
+# duration
 bxp.duration <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "duration", ylab = "Duration in minutes", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
 bxp.duration
 
-# not nice -look into formatting of decimal and comma of sus score
-bxp.sus <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "sus", ylab = "SUS score", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
+# accuracy
+bxp.sus <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "accuracy", ylab = "Accuracy in percent", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
 bxp.sus
 
-# doesn't work with rank
-bxp.rank <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "rank", ylab = "Ranking", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
-bxp.rank
-
+# sus
+bxp.sus <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "sus", ylab = "SUS score", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
+bxp.sus
 
 ##
 ## Outliers
 ##
 
+# duration
 data %>% group_by(notation.r, experience.r, sequence) %>% identify_outliers(duration)
+
+# accuracy
+data %>% group_by(notation.r, experience.r, sequence) %>% identify_outliers(accuracy)
+
+# sus
+data %>% group_by(notation.r, experience.r, sequence) %>% identify_outliers(sus)
 
 ##
 ## Normality Assumption
 ##
 
+# duration
 data %>% group_by(notation.r, experience.r, sequence) %>% shapiro_test(duration)
+# histograms
+hist(data$duration[data$notation.r == "natural language"], main = "Natural Language", xlab = "Duration")
+hist(data$duration[data$notation.r == "key-value"], main = "Key-Value", xlab = "Duration")
+# qq plot 
+# notation
+ggqqplot(data, "duration", ggtheme = theme_bw()) +
+  facet_grid(sequence ~ notation.r, labeller = "label_both")
+# experience
+ggqqplot(data, "duration", ggtheme = theme_bw()) +
+  facet_grid(sequence ~ experience.r, labeller = "label_both")
 
+# accuracy
+data %>% group_by(notation.r, experience.r, sequence) %>% shapiro_test(accuracy)
+# histogram
+hist(data$accuracy[data$notation.r == "natural language"], main = "Natural Language", xlab = "Accuracy")
+hist(data$accuracy[data$notation.r == "key-value"], main = "Key-Value", xlab = "Accuracy")
+# qq plot 
+# notation
+ggqqplot(data, "accuracy", ggtheme = theme_bw()) +
+  facet_grid(sequence ~ notation.r, labeller = "label_both")
+# experience
+ggqqplot(data, "accuracy", ggtheme = theme_bw()) +
+  facet_grid(sequence ~ experience.r, labeller = "label_both")
+
+# sus
+data %>% group_by(notation.r, experience.r, sequence) %>% shapiro_test(sus)
+# histogram
+hist(data$sus[data$notation.r == "natural language"], main = "Natural Language", xlab = "SUS score")
+hist(data$sus[data$notation.r == "key-value"], main = "Key-Value", xlab = "SUS score")
+# qq plot 
+# notation
+ggqqplot(data, "sus", ggtheme = theme_bw()) +
+  facet_grid(sequence ~ notation.r, labeller = "label_both")
+# experience
+ggqqplot(data, "sus", ggtheme = theme_bw()) +
+  facet_grid(sequence ~ experience.r, labeller = "label_both")
+
+##
+## Homogneity of variance assumption
+##
+
+# Compute Levene’s test at each level of the within-subjects factor -> notation
+# duration
+data %>%
+  group_by(notation.r) %>%
+  levene_test(duration ~ experience.r*sequence)
+
+# accuracy
+data %>%
+  group_by(notation.r) %>%
+  levene_test(accuracy ~ experience.r*sequence)
+
+# sus
+data %>%
+  group_by(notation.r) %>%
+  levene_test(sus ~ experience.r*sequence)
+
+##
+## Computation: three-way mixed ANOVA
+##
+
+# duration
+res.aov.duration <- anova_test(
+  data = data, dv = duration, wid = id,
+  within = notation.r, between = c(experience.r, sequence)
+)
+get_anova_table(res.aov.duration)
+
+# accuracy
+res.aov.accuracy <- anova_test(
+  data = data, dv = accuracy, wid = id,
+  within = notation.r, between = c(experience.r, sequence)
+)
+get_anova_table(res.aov.accuracy)
+
+# sus
+res.aov.sus <- anova_test(
+  data = data, dv = sus, wid = id,
+  within = notation.r, between = c(experience.r, sequence)
+)
+get_anova_table(res.aov.sus)
+
+#############################
+#############################
+#############################
 
 ##
 # ANOVA ASSUMPTIONS
@@ -62,8 +154,8 @@ data %>% group_by(notation.r, experience.r, sequence) %>% shapiro_test(duration)
 
 # (1) assumption of normality
 # histogram
-hist(data$duration[data$notation.r == "1"], main = "Natural Language", xlab = "Duration")
-hist(data$duration[data$notation.r == "2"], main = "Key-Valuee", xlab = "Duration")
+hist(data$duration[data$notation.r == "natural language"], main = "Natural Language", xlab = "Duration")
+hist(data$duration[data$notation.r == "key-value"], main = "Key-Value", xlab = "Duration")
 
 # qqplot
 # do with anova
