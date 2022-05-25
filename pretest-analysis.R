@@ -3,7 +3,7 @@ library(ggplot2)
 library(AICcmodavg)
 
 # load data
-data <- read.csv("dataset_v4.csv", sep = ";", header = TRUE)
+data <- read.csv("dataset_v4.csv", sep = ";", dec = ",", header = TRUE)
 data$time <- as.POSIXct(data$time, format="%M:%S")
 data$duration <- as.numeric(format(data$time, "%M")) + as.numeric(format(data$time, "%S"))/60
 
