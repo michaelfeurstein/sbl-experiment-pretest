@@ -130,6 +130,10 @@ res.aov.duration <- anova_test(
 )
 get_anova_table(res.aov.duration)
 
+#res.aov.duration2 <- aov(duration ~  experience.r * sequence * notation.r, data = data)
+#Anova(res.aov.duration2, type="II")
+#report(res.aov.duration2)
+
 # accuracy
 res.aov.accuracy <- anova_test(
   data = data, dv = accuracy, wid = id,
@@ -143,6 +147,91 @@ res.aov.sus <- anova_test(
   within = notation.r, between = c(experience.r, sequence)
 )
 get_anova_table(res.aov.sus)
+
+##
+## Post hoc tests
+##
+
+##
+## Two way interaction
+##
+
+##
+## Statistical tests for ranking question 
+## --> preference data
+##
+
+# Friedman's test based on: https://stats.stackexchange.com/questions/142903/develop-a-statistical-test-to-distinguish-two-products
+friedman.test(rank.r ~ notation.r|id, data = data) 
+
+# Wilcoxon rank sum test
+data$rank.r <- as.numeric(data$rank.r)
+
+data %>% sample_n_by(notation.r, size = 2)
+
+data %>%
+  group_by(notation.r) %>%
+  get_summary_stats(rank.r, type = "median_iqr")
+
+bxp <- ggboxplot(
+  data, x = "notation.r", y ="rank.r",
+  ylab = "Rank", xlab = "Notation", add = "jitter"
+)
+bxp
+
+stat.test <- data %>%
+  wilcox_test(rank.r ~ notation.r) %>%
+  add_significance()
+stat.test
+
+data %>% wilcox_effsize(rank.r ~ notation.r)
+
+stat.test <- stat.test %>% add_xy_position(x = "notation.r")
+bxp + 
+  stat_pvalue_manual(stat.test, tip.length = 0) +
+  labs(subtitle = get_test_label(stat.test, detailed = TRUE))
+
+# Aligned ranks transformation ANOVA (ART anova)
+# Based on: https://rcompanion.org/handbook/F_16.html
+
+ar.model <- art(rank.r ~ experience.r + notation.r + experience.r:notation.r, data = data)
+ar.model
+anova(ar.model)
+
+library(rcompanion)
+Sum = groupwiseMedian(rank.r ~ experience.r + notation.r,
+                      data=data,
+                      bca=FALSE, percentile=TRUE)
+Sum
+
+pd = position_dodge(0.3)
+ggplot(Sum,
+       aes(x = notation.r,
+           y = Median,
+           color = experience.r)) + 
+  geom_point(shape  = 15,
+             size   = 4,
+             position = pd) + 
+  geom_errorbar(aes(ymin  =  Percentile.lower,
+                    ymax  =  Percentile.upper),
+                width =  0.2,
+                size  =  0.7,
+                position = pd) + 
+  theme_bw() + 
+  theme(axis.title   = element_text(face = "bold"),
+        axis.text    = element_text(face = "bold"),
+        plot.caption = element_text(hjust = 0)) + 
+  ylab("Median rank.r count") + 
+  ggtitle ("rank.r counts for advanced and novice users",
+           subtitle = "for two types of notations") + 
+  
+  labs(caption  = paste0("\nrank.r counts for two experience levels ",
+                         "and two types of notation. Boxes indicate \n",
+                         "the median. ",
+                         "Error bars indicate the 95% confidence ",
+                         "interval ",
+                         "of the median."),
+       hjust=0.5)
 
 #############################
 #############################
