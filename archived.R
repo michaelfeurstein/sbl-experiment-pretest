@@ -27,7 +27,7 @@ leveneTest(duration ~ notation.r, data)
 leveneTest(duration ~ experience.r, data)
 
 # boxplots
-boxplot(duration ~ notation.r, data = data2, xlab = "Notation", ylab = "Duration", names = c("1" = "NL", "2" = "KV"))
+boxplot(duration ~ notation.r, data = data, xlab = "Notation", ylab = "Duration", names = c("1" = "NL", "2" = "KV"))
 
 # bartlett's test
 bartlett.test(duration ~ notation.r, data = data)
