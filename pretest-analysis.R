@@ -149,6 +149,52 @@ res.aov.sus <- anova_test(
 get_anova_table(res.aov.sus)
 
 ##
+## Descriptive data per dependent variable (min, mean, median, max sd)
+## http://www.sthda.com/english/wiki/descriptive-statistics-and-graphics
+##
+
+# duration
+data %>%
+  group_by(sequence, experience.r, notation.r) %>%
+  summarize(min_duration = min(duration), mean_duration = mean(duration), median_duration = median(duration), max_duration = max(duration), sd_duration = sd(duration))
+
+# duration without grouping by sequence
+data %>%
+  group_by(experience.r, notation.r) %>%
+  summarize(min_duration = min(duration), mean_duration = mean(duration), median_duration = median(duration), max_duration = max(duration), sd_duration = sd(duration))
+
+
+# accuracy
+data %>%
+  group_by(sequence, experience.r, notation.r) %>%
+  summarize(min_accuracy = min(accuracy), mean_accuracy = mean(accuracy), median_accuracy = median(accuracy), max_accuracy = max(accuracy))
+
+# accuracy without grouping by sequence
+data %>%
+  group_by(experience.r, notation.r) %>%
+  summarize(min_accuracy = min(accuracy), mean_accuracy = mean(accuracy), median_accuracy = median(accuracy), max_accuracy = max(accuracy))
+
+# sus
+data %>%
+  group_by(sequence, experience.r, notation.r) %>%
+  summarize(min_sus = min(sus), mean_sus = mean(sus), median_sus = median(sus), max_sus = max(sus))
+
+# sus without grouping by sequence
+data %>%
+  group_by(experience.r, notation.r) %>%
+  summarize(min_sus = min(sus), mean_sus = mean(sus), median_sus = median(sus), max_sus = max(sus))
+
+# rank / preference
+data %>%
+  group_by(sequence, experience.r, notation.r) %>%
+  summarize(min_rank.r = min(rank.r), mean_rank.r = mean(rank.r), median_rank.r = median(rank.r), max_rank.r = max(rank.r))
+
+# rank / preference without grouping by sequence
+data %>%
+  group_by(sequence, experience.r, notation.r) %>%
+  summarize(min_rank.r = min(rank.r), mean_rank.r = mean(rank.r), median_rank.r = median(rank.r), max_rank.r = max(rank.r))
+
+##
 ## Post hoc tests
 ##
 
