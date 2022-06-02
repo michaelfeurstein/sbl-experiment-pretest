@@ -15,6 +15,29 @@ Figure 1 provides an overview of the experimental design. Within each group of u
 ![Experiment Design](/design.png)
 *Figure 1: Experiment Design: 2x2 mixed factorial design*
 
+## Variables
+
+**Independent Variables:**
+
+**(1) Notation “within-subjects factor”:** participants have to create a video-based learning module by using the natural language (NL) notation and the key-value (KV) notation.
+
+**(2) Experience Level “between-subjects factor”:** participants will be grouped into two groups based on their experience level being either novice or experienced educators/facilitators.
+
+**(3) Sequence “between-subjects factor”:** within each experience level participants will start with different notations respectively. Namely AB: NL->KV and BA: KV->NL   
+
+**Dependent Variables - measurements:**
+
+**(1) Time “Efficiency”** - measured in duration in mm:ss —> transformed to mm,(ss/60)  
+The dependent variable time is defined as the authoring time a participant needs in order to complete the authoring task.
+
+**(2) Accuracy - measured in percentage**  
+Saket et al. (2015) used measuring in percentage 0-100% —> answer correct (100%) incorrect (0%)
+Based on quality criteria for assessment of problems in storyboard
+
+**(3) Preference “Ranking”**
+
+**(4) SUS score**
+
 ## Research Questions
 
 **(RQ1) “main effect notation”:**  
@@ -59,27 +82,3 @@ Is there an association between experience level and preference for a type of no
 
 **(H4) “preference”**  
 There is an association - novice users will prefer the natural language notation and experienced users will prefer the key-value notation.
-
-## Variables
-
-**Independent Variables:**
-
-**(1) Notation “within-subjects factor”:** participants have to create a video-based learning module by using the natural language (NL) notation and the key-value (KV) notation.
-
-**(2) Experience Level “between-subjects factor”:** participants will be grouped into two groups based on their experience level being either novice or experienced educators/facilitators.
-
-**(3) Sequence “between-subjects factor”:** within each experience level participants will start with different notations respectively. Namely AB: NL->KV and BA: KV->NL   
-
-**Dependent Variables - measurements:**
-
-**(1) Time “Efficiency”** - measured in duration in mm:ss —> transformed to mm,(ss/60)  
-The dependent variable time is defined as the authoring time a participant needs in order to complete the authoring task.
-
-**(2) Accuracy - measured in percentage**  
-Saket et al. (2015) used measuring in percentage 0-100% —> answer correct (100%) incorrect (0%)
-Based on quality criteria for assessment of problems in storyboard
-
-**(3) Preference “Ranking”**
-
-**(4) SUS score**
-
