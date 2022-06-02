@@ -36,8 +36,8 @@ bxp.duration <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "durati
 bxp.duration
 
 # accuracy
-bxp.sus <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "accuracy", ylab = "Accuracy in percent", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
-bxp.sus
+bxp.accuracy <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "accuracy", ylab = "Accuracy in percent", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
+bxp.accuracy
 
 # sus
 bxp.sus <- ggboxplot(data, x = "notation.r", xlab = "Notation", y = "sus", ylab = "SUS score", color = "experience.r", palette = "jco", facet.by = "sequence", panel.labs = list(sequence = c("AB: NL->KV", "BA: KV->NL")), add = "jitter") + scale_x_discrete(labels=rep(c("NL","KV"),2))
@@ -121,6 +121,12 @@ data %>%
 
 ##
 ## Computation: three-way mixed ANOVA
+## FRAGE 4: mit sequence als independent variable wäre es eine 3-way ANOVA
+##        ich interessiere mich aber nicht für die sequence, da ich die sequence
+##        nur einsetze um carry-over zu eliminieren.
+##        um das auch zu testen führe ich aber eine 3-way ANOVA aus um 
+##        zu testen ob es einen carry-over vielleicht doch gab?
+##        ist das die denkweise dahinter?
 ##
 
 # duration
@@ -163,6 +169,12 @@ data %>%
   group_by(experience.r, notation.r) %>%
   summarize(min_duration = min(duration), mean_duration = mean(duration), median_duration = median(duration), max_duration = max(duration), sd_duration = sd(duration))
 
+# duration for sample_size.R
+data %>%
+  group_by(experience.r, notation.r) %>%
+  summarize(mean_duration = mean(duration), sd_duration = sd(duration))
+
+################
 
 # accuracy
 data %>%
@@ -174,6 +186,13 @@ data %>%
   group_by(experience.r, notation.r) %>%
   summarize(min_accuracy = min(accuracy), mean_accuracy = mean(accuracy), median_accuracy = median(accuracy), max_accuracy = max(accuracy))
 
+# accuracy for sample_size.R
+data %>%
+  group_by(experience.r, notation.r) %>%
+  summarize(mean_accuracy = mean(accuracy), sd_accuracy = sd(accuracy))
+
+################
+
 # sus
 data %>%
   group_by(sequence, experience.r, notation.r) %>%
@@ -184,6 +203,13 @@ data %>%
   group_by(experience.r, notation.r) %>%
   summarize(min_sus = min(sus), mean_sus = mean(sus), median_sus = median(sus), max_sus = max(sus))
 
+# sus for sample_size.R
+data %>%
+  group_by(experience.r, notation.r) %>%
+  summarize(mean_sus = mean(sus), sd_sus = sd(sus))
+
+################
+
 # rank / preference
 data %>%
   group_by(sequence, experience.r, notation.r) %>%
@@ -191,15 +217,21 @@ data %>%
 
 # rank / preference without grouping by sequence
 data %>%
-  group_by(sequence, experience.r, notation.r) %>%
+  group_by(experience.r, notation.r) %>%
   summarize(min_rank.r = min(rank.r), mean_rank.r = mean(rank.r), median_rank.r = median(rank.r), max_rank.r = max(rank.r))
 
 ##
 ## Post hoc tests
 ##
 
+# FRAGE 5: nach der 3way arbeite ich mich abhängig von dem ergebnis der signifikanzen zuerst mit two way und dann paired t-tests hinunter?
+
 ##
 ## Two way interaction
+##
+
+##
+## test the difference between two means with a t test or a one-way ANOVA
 ##
 
 ##
