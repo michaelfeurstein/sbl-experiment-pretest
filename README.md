@@ -23,7 +23,7 @@ Figure 1 provides an overview of the experimental design. Within each group of u
 
 **(2) Experience Level “between-subjects factor”:** participants will be grouped into two groups based on their experience level being either novice or experienced educators/facilitators.
 
-**(3) Sequence “between-subjects factor”:** within each experience level participants will start with different notations respectively. Namely AB: NL->KV and BA: KV->NL   
+**(3) Sequence “between-subjects factor”:** within each experience level participants will start with different notations respectively. Namely AB: NL->KV and BA: KV->NL **FRAGE 6: gebe ich das als independent variable an oder ist das implizit gegeben im design im sinne von cross over und muss hier gar nicht mehr erwähnt werden**   
 
 **Dependent Variables - measurements:**
 
