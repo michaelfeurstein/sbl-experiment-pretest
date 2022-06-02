@@ -1,3 +1,20 @@
+## Study Design
+
+In principle the experiment aims to compare two types of notations for a domain-specific language ([storyboard-language](https://github.com/michaelfeurstein/storyboard-language)), taking into account the experience level of participants. The language allows facilitators the creation (authoring) of video-based learning modules. Two types of notations are being evaluated: (1) a natural-language and (2) key-value.
+
+The overall aim of this experiment is to determine whether the creation of a video-based learning module using a key-value based notation differs from using a natural language based notation for experienced as well as novice educators and facilitators.
+
+This means participants of different level of experience should create video-based learning modules using a key-value based notation and using a natural-language based notation. Finally, they should assess the notations’ system usability and compare both notations based on their personal preference by ranking them.
+
+The experiment in this study focuses on two types of text-based notation styles (factor: NOTATION; levels: key-value, natural-language) and two groups of users (factor: EXPERIENCE; levels: novice, advanced). This is a 2 x 2 mixed factorial design with the user experience being the between-subjects (block) factor and the type of notation being the within-subjects (repeated measures) factor.
+
+The first group of users are students with little to no experience in authoring video-based learning content. The second group consists of lecturers/instructors and facilitators with experience in the use of video-based learning.
+
+Figure 1 provides an overview of the experimental design. Within each group of users, two sequence groups will be formed: AB and BA. Thus, each sequence group will have two treatments (repeated measures): treatment A using the natural language notation style and treatment B using the key-value notation style. The sequence groups will be applied in a crossover design in order to take into account possible carry-over effects. For each treatment period, a different video with a set of instructions will be assigned. The video content and instructions text are not part of the study, therefore no random pool of videos is curated assigning each individual treatment with a unique video, but assigning only the treatment periods with different videos and instructions. The video itself is required as a building block for a video-based learning module and the instruction text is needed to tell the participant what authoring tasks need to be performed.
+
+![Experiment Design](/design.png)
+*Figure 1: Experiment Design: 2x2 mixed factorial design*
+
 ## Research Questions
 
 **(RQ1) “main effect notation”:**  
