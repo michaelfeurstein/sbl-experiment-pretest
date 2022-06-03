@@ -8,6 +8,7 @@
 # Superpower
 # based on vignette: https://cran.r-project.org/web/packages/Superpower/vignettes/intro_to_superpower.html
 # and book: https://aaroncaldwell.us/SuperpowerBook/introduction-to-power-analysis.html#overview-of-power-analysis 
+# and: https://rdrr.io/cran/Superpower/f/vignettes/more_anova_designs.Rmd 
 #
 library(Superpower)
 
@@ -18,10 +19,10 @@ library(Superpower)
 # Groups:   experience.r [2]
 # experience.r notation.r       mean_duration sd_duration
 # <fct>        <fct>                    <dbl>       <dbl>
-# 1 advanced     natural language          11.3        2.96
-# 2 advanced     key-value                 10.0        2.18
-# 3 novice       natural language          10.3        2.78
-# 4 novice       key-value                 12.6        1.24
+# 1 advanced     natural language         13.8         5.67
+# 2 advanced     key-value                 9.38        2.59
+# 3 novice       natural language          9.68        2.60
+# 4 novice       key-value                12.2         1.96
 #
 
 #
@@ -37,12 +38,12 @@ library(Superpower)
 # Bei https://arcstats.io/shiny/anova-power/ kriege ich ansatzweise die gleichen ergebnisse.... komisch
  
 design_result.duration <- ANOVA_design(design = "2b*2w",
-                              n = 40, 
-                              mu <- c(11.3, 10.0, 10.3, 12.6), 
-                              sd <- c(2.96, 2.18, 2.78, 1.24), 
-                              r = 0, 
+                              n = 6,
+                              mu <- c(13.8, 9.38, 9.68, 12.2),
+                              sd <- c(5.67, 2.59, 2.6, 1.96),
+                              r = 0.8,
                               label_list = list("Experience"  = c("advanced", "novice"),
-                                                "Notation" = c( "natural-language", "key-value")),
+                                                "Notation" = c("natural-language", "key-value")),
                               plot = TRUE)
 # 
 # ANOVA power simulation
@@ -69,7 +70,7 @@ exact_result.duration.2 <- ANOVA_exact2(design_result.duration,
                               verbose = TRUE)
 
 # find the minimum needed sample size n for a given power
-plot_power(design_result.duration, max_n = 185, desired_power = 80)
+plot_power(design_result.duration, max_n = 80, desired_power = 80)
 # FRAGE 2: aus plot_power resultierende bedingung für n= 180 macht mein experiment nutzlos? wie kann ich trotzdem noch weiter machen.
 # power immer mit kommunizieren, damit man beim ergebnis lesen das mit bedenkt?
 
@@ -185,6 +186,41 @@ exact_result.sus.2 <- ANOVA_exact2(design_result.sus,
 ############
 ############
 
+# Simple Design
+
+design_simple.duration <- ANOVA_design(design = "2w",
+                                       n = 6, 
+                                       mu <- c(10.0, 8.77), 
+                                       sd <- 2.765, 
+                                       r = 0.9, 
+                                       label_list = list("Notation" = c( "natural-language", "key-value")),
+                                       plot = TRUE)
+
+power_result.simples <- ANOVA_power(design_simple.duration, 
+                                alpha = 0.05, 
+                                nsims = 100, 
+                                seed = 1234)
+
+# FRAGE: liege ich richtig wenn ich die correlation r auf 0 setze wegen carry over?
+# wenn ich correlation auf 0.5 setze wird die power höher
+
+plot_power(design_simple.duration, max_n = 185, desired_power = 80)
+
+design_simple.duration <- ANOVA_design(design = "2b*2w",
+                                       n = 6, 
+                                       mu <- c(9.67, 8.21, 10.3, 9.33), 
+                                       sd <- c(3.10, 2.42, 3.51, 3.06), 
+                                       r = 0, 
+                                       label_list = list("Sequence" = c("NL-KV","KV-NL"),
+                                                         "Notation" = c("natural-language", "key-value")),
+                                       plot = TRUE)
+
+plot_power(design_simple.duration, max_n = 185, desired_power = 80)
+
+############
+############
+############
+
 #
 # Easypower
 # based on: https://cran.r-project.org/web/packages/easypower/vignettes/User_Input.html 
@@ -208,4 +244,9 @@ main.eff3 <- list(name = "Sequence", levels = 2, eta.sq = "large")
 n.multiway(iv1 = main.eff1, iv2 = main.eff2, iv3 = main.eff3, interaction.eta2 = 0.14)
 #n.multiway(iv1 = main.eff1, iv2 = main.eff2, iv3 = main.eff3, int1 = int.eff1, int2 = int.eff2)
 
+# Simple Design
+main.eff <- list(name = "Notation", levels = 2, eta.sq = 0.50)
+# Running the function with default settings
+n.oneway(iv = main.eff)
 
+# FRAGE: wäre das ok für ein vereinfachtes design 0.50 aus anderm paper genommen.
