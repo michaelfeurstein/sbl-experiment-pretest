@@ -224,6 +224,7 @@ plot_power(design_simple.duration, max_n = 185, desired_power = 80)
 #
 # Easypower
 # based on: https://cran.r-project.org/web/packages/easypower/vignettes/User_Input.html 
+# and: https://cran.r-project.org/web/packages/easypower/easypower.pdf
 #
 library(easypower)
 
