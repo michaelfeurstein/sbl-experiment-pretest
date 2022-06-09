@@ -1,6 +1,7 @@
 # simple design
+# crossover trial AB|BA
 
-datasimple <- read.csv("dataset_simple.csv", sep = ";", dec = ",", header = TRUE)
+datasimple <- read.csv("dataset.csv", sep = ";", dec = ",", header = TRUE)
 datasimple$time <- as.POSIXct(datasimple$time, format="%M:%S")
 datasimple$duration <- as.numeric(format(datasimple$time, "%M")) + as.numeric(format(datasimple$time, "%S"))/60
 
@@ -89,7 +90,7 @@ np.plot <- ggplot(np, aes(x = period,
 # arrange both plots in one figure
 ggarrange(sp.plot, np.plot, nrow = 1, ncol = 2)
 
-# estimate carry-over effect using sm values by t-test
+# estimate carry-over effect using sum values by t-test
 # Null Hypothesis: there is a significant difference between NL-KV / KV-NL sequences --> this means there is a carry over effect (use only period 1)
 # Alternative Hypothesis: there is no signicant difference between NL-KV / KV-NL sequences --> this means there is NO carry over effect (use both periods)
 # p-value > 0.05 shows possible carry-over effect is no significantly different between NL-KV / KV-NL sequences
@@ -100,3 +101,5 @@ t.test(mean_duration ~ sequence, data = sp)
 ########
 
 t.test(duration ~ notation.r, data = df)
+
+
