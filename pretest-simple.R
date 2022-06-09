@@ -5,7 +5,7 @@ datasimple$time <- as.POSIXct(datasimple$time, format="%M:%S")
 datasimple$duration <- as.numeric(format(datasimple$time, "%M")) + as.numeric(format(datasimple$time, "%S"))/60
 
 # preparations for testing
-# setup mapping and factors
+# setup mapping and as.factor
 syntaxMapping <- c("nl" = 1, "kv" = 2)
 rankingMapping <- c("don't know" = 0, "2nd place" = 1, "1st place" = 2)
 
