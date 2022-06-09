@@ -22,10 +22,10 @@ datasimple$period <- as.factor(datasimple$period)
 # the actual dataframe we'll be working with
 df <- subset(datasimple, select = c("subject", "sequence", "period", "notation.r", "duration", "accuracy", "sus", "rank.r"))
 
-# Summary
+# Summary Data
 
 # duration for sample_size.R
-datasimple %>%
+df %>%
   group_by(notation.r) %>%
   summarize(mean_duration = mean(duration), sd_duration = sd(duration))
 
