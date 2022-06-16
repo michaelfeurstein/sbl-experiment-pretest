@@ -34,6 +34,13 @@ Based on quality criteria for assessment of problems in storyboard
 
 ## Research Questions
 
+The overall aim is to investigate which type of notation for the Storyboard-Language (DSL) meets the needs of facilitators and lecturers creating video-based learning content. Based on this overall aim we can formulate a main research goal (RG) utilizing the goal definition template from the (GQM) method (Basili et al. 1994; van Solingen 1999) as follows
+
+**(RG) Research Goal:**
+Analysis of the Storyboard Language for the purpose of comparing two types of notations with respect to its efficiency, effectiveness and usability for facilitators and lecturers who are involved in the authoring process vor video-based learning modules.
+
+From this the following research questions are formulated:
+
 **(RQ1) “main effect notation”:**  
 How time efficient and accurate are different types of notation for authoring a video-based learning module?
 
